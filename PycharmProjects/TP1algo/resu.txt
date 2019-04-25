@@ -1,0 +1,9 @@
+chemise
+cravate
+chaussette
+caleçon
+pantalon
+ceinture
+veste
+chaussure
+montre
