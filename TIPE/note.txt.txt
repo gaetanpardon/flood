@@ -1,0 +1,16 @@
+sur les siteme de nombreus type signaux plus ou mions alétoire sont généré  , 
+pour les annalysé on peut donc avoir recours a leur décomposition (une décomposition en série de fourier ).
+ des vribations d'un systeme en passant par le bruit , 
+l'analyse des signaux permete de localisé les problemes et d'optimisé les systemes .
+//de la des chois sont fais pour répondre aux divers contrain imposé
+aprés une recheche de sujet long et peu fructueuse et étant interecé par l'informatique j'ai choisi ce sujet 
+
+
+
+
+
+
+Le Traitement du signal est un domaine indispensable de l'ingénieurerie informatique. La transformé en série de fourrier permet d'analyser , de comprendre et d'optimiser au mieux un système.
+Cependant un signal peut avoir plusieur forme et soumis au bruit, ce sont autant de contraintes hasardeuses qui me laisse penser que l'analyse et le traitement du signal
+sont un domaine justifier pour le sujet annuel du TIPE. Intéressé par les séries de Fourrier je souhaite spécialisé mon projet dans cette voie pour proposer une présentation la 
+moins superficiel possible.  93 mots

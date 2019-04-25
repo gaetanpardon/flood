@@ -1,0 +1,147 @@
+Préambule : (63 mots)
+Dans cette étude, nous nous intéresserons à l’automatisation de l’accordage pour les instruments à
+corde afin que chaque utilisateur puisse accorder son instrument au plus proche de son style musical.
+
+Nous avons proposer un système d’accordage électronique automatisé pour un ukulélé électro-acoustique, en
+comparant la fréquence de la note obtenue grâce à la transformée de Fourier fenêtrée à une fréquence
+de consigne. 
+
+
+Introduction : (99 mots)
+Comme annoncé dans le MCOT, nous avons travaillé à la réalisation d'un accordeur asservi.
+
+En ce qui me concerne, je me suis chargé de la partie sur l'analyse du signal : la réalisation d'un programme informatique déterminant la fréquence donc la note jouée. 
+Pour rendre cette application universelle, nous sommes partis sur une carte Arduino qui ne coûte pas cher et permettra à chaque musicien qui le souhaite, d'avoir accès à cet accordeur. Mes principales contraintes ont donc été liées à l'optimisation du traitement pour que notre application puisse fonctionner sur un micro contrôleur dont la capacité est très limitée.
+
+
+Corps principales : (max 750 mots)
+
+1) Modalités d’action
+2) Restitution des résultats
+3) Analyse –Exploitation –Discussion
+travail théorique ou/et expérimental qu’il a mis en œuvre pour obtenir ses résultats (modalités d’action). Il doit ensuite les  exposer  clairement  (restitution  des  résultats)  et  finalement  les  analyser 
+scientifiquement de manière critique(Analyse –Exploitation –Discussion).
+
+
+
+Avant de démarrer ce projet autour de l'accordeur de ukulélé électro-acoustique, j'avais déjà effectué une recherche documentaire sur la transformée de Fourier et les notions qui s'y rattachent. 
+Une analyse sur les notes d'un ukulélé à partir de la transformée de Fourier a montré qu'il y avait des harmoniques plus importantes que la fondamentale. Cette information a rendu la détermination de la fréquence à partir d'éléments remarquables comme les fronts et les crêtes, inanvisageable. Ce constat m'a permi de valider la nécessité d'utiliser la transformée de Fourier pour travailler sur la réalisation d'un accordeur asservi. 
+ 
+La transformée de Fourier se fait sur des signaux périodiques, cependant les signaux musicaux, ont la particularité de ne pas avoir un son constant car ils ne fournissent pas l'information sur la période en permanence mais uniquement quand une note est jouée. Il est donc plus intéressant de s'attarder pour le choix de traitement sur une transformée de Fourier fenêtrée. 
+
+Le fait d'avoir à la fois la mise en place d'un fenêtrage et un signal semi-périodique (quand la note est jouée), implique que le spectre de Fourier contienne une déformation fréquentielle. Puisqu'en théorie il y a cette déformation, j'ai donc poursuivi mon travail par des divers essais sur des harmoniques afin de visualiser ces bruits. L'objectif était de voir si en pratique, ils ne rendaient pas l'information illisible lors de la détermination de la fréquence de la fondamentale.
+
+Mes tests se sont ensuite tournés vers des signaux enregistrés (complexes et avec du bruit contrairement aux harmoniques pures). Je suis donc passée de signaux théoriques à des signaux réels pour vérifier la faisabilité de la solution sélectionnée. Ces essais ont été réalisés à partir d'enregistrements tels que : un signal rectangulaire extrait d'un TP (donc dont l'allure du spectre est connu), un enregistrement de basse qualité de ukélélé, et un enregistrement de haute qualité (réalisé en studio) dont je ne suis pas parvenu à extraire avec mes algorithmes les informations du signal.  
+
+Dans cette phase de mon étude, l'ensemble de ces tests aussi bien avec les signaux réels que les harmoniques pures, a montré comme attendu la formation de crêtes arrondis sur le spectre au niveau des harmoniques. Toutefois, ces formes restent suffisament prononcées pour permettre la constation de la fréquence de la fondamentale. 370
+
+Ces premières constations permettent d'entreprendre plusieurs solutions de fenêtrage. Une piste envisagée a d'abord été la division par une fonction linéaire de l'écart temporel potentellement décalé d'une constante. Cette direction n'a pu été retenue car le résultat obtenu était instable et dépendait majoritairement de la régularité des échantillons.
+Afin de réaliser notre accordeur, nous avions décidé d'utiliser comme évoqué précédemment une carte Arduino. Cette solution ne peut donc être retenue car elle
+devrait contraindre le micro contrôleur à avoir un échantillonnage régulier. Néanmoins, un échantillonage régulier implique des pauses et donc d'avoir du temps, alors qu'il est préférable de le garder, notamment compte tenu du critère de Shannon.
+
+Une seconde solution de fenêtrage envisagée par la suite, fut celle de la forme exponentielle. Afin de mettre en place cette solution, les formules de calcul ont été les suivantes :
+
+E(t) = l'échantillon à l'instant t
+tp = le temps lors de l'échantillonage précédent E(tp)
+k = une constante fixée
+
+an =(t-tp)*cos(n*t)*E(t) + an/exp(k*(t-tp)) 
+bn =(t-tp)*sin(n*t)*E(t) + bn/exp(k*(t-tp)) 
+
+Cette possibilité comporte plusieurs avantages : les échantillons sont divisés par l'exponentiel d'une fonction linéaire du temps ; de plus, la solution ne nécessite pas de mémoriser les valeurs échantillonées ; en réutilisant les résultats de ce calcul, le temps de calcul en devient réduit car seul une opération avec le nouvel échantillon est réalisé.
+
+Cette piste créée plus de bruit fréquentiel autour des harmoniques créant des formes courbes sur le spectre que la solution 3.
+
+
+
+
+
+fenétrage de forme réctangulaire :
+
+bruit : seulment du à l'échantilonage 
+
+formule de cacul :
+E(t) l'écantion à l'instant t
+tp le temps leur de l'écantilonage précédant E(t)
+E(t1) l'écantion à l'instant t1 dernier échantion en mémoire 
+t0 le temps leur de l'écantilonage précédant E(t0)
+
+
+an =(t-tp)cos(nt)*E(t) + an -  (t1-t0)cos(nt)*E(t1)
+bn =(t-tp)sin(nt)*E(t) + bn -  (t1-t0)sin(nt)*E(t1)
+
+avantage :
+le poid échantion est constant
+
+temps de calcul réduit du au recalcul à partir des valeur précédente et du nouvelle échantillon 
+
+incovénient :
+
+nécésite  de de mémorisé les valeur échantiloné et moment de l'échantilonage  
+
+fénétrage réctagulaire d'un bloq .
+contrairement au solution précédente les 
+
+
+
+
+
+
+
+
+fenétré multiplié le tout 
+fonction périodique multiplié par une fonction qui va en sélectionner une partie en augmentant le poids de certains éléments
+tu travailles juste sur une période
+sur pc avec échantillon et non signal entier
+ce qui ajoute des erreurs à tes résultats (FFT Fast Fourier Transfert = échantillons sur ordi) 
+
+pour réaliser un accordeur, il faut déterminer la fondamentale du ukulélé afin que l'accordeur puisse se paramétrer à partir de la fondamentale. Cette fondamentale se détermine à partir d'une Analyse spectrale = spectre de Fourier
+
+calcul sur un signal a l'infini
+calcul mathématique exact l'intégral jusqu'à l'infini
+
+intégral : coefficient AN et BN en fonction des harmoniques
+les coeef AN > intégral de moins l'inifin à plus l'infini du signal multiplié par cosinus N oméga T (T= valeur variable)
+indice de temps qui va varié donc cosinus varie en fonction du temps
+signal de période grand T donc on le multiplie sur un cosinus de même période 
+fonction de même période et on multiplie par N la frénquence donc on divise la période par N. (l'un et l'inverse de l'autre)
+
+à partir de cela on peut déterminer un déphasage et la valeur du coeeff AN2 + BN2 racine des deux
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tentative de compilation de la solution pour une carte arduino , réduction de la taile des liste pour l'adapté au contrainte mémoire de la carte arduino  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+En adaptant l'algorithme au contrainte de vitesse et de régularité des échantillons
+et en l'optimisant pour qu'il soit le plus léger et efficace possible. 
+
+
+La transformée de Fourier permet alors d'analyser et de comprendre un signal, et ainsi d'optimiser
+au mieux le contrôle d’un système. Cette approche est donc tout à fait en accord avec thème de
+cette année, optimalité et hasard. 
+

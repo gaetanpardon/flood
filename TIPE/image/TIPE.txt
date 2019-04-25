@@ -1,0 +1,27 @@
+en accore avec mon camarade je m'occupais de la parti traitement du signal / informatique ...
+
+j'ai selection une (deux) manier d'effecuté le traitement numérique 
+
+guitare 82-440
+
+ukulele 440+ 
+
+
+recherche documentaire ,
+
+écriture de scripte d'annalyse en python +test sur un document 
+
+transcription en c++ test sur fichier audio , incapasité à exploité le fichier fournie par mon camarade 
+
+test sur la déformation du spectre engendrer par le fenétrage , simples harmonique puis signal enregistré 
+
+écriture sur le logiciel arduino est adaptage au contrainte d'espace de la carte 
+
+
+concevoir un progrme léger
+
+rectangulaire : balayage fin ...
+
+expo croisante : bruit --> balayage moins prési pour aproché la fréquence 
+
+l'ensemble agis comme un classique programe d'accordeur éléctronique mais pouvant marché sur un support au capacité limité 
