@@ -1,0 +1,2 @@
+import Obj
+Obj.Dice
